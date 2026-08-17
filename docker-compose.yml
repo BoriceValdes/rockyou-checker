@@ -1,0 +1,58 @@
+name: rockyou-checker
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rockyou
+      POSTGRES_PASSWORD: rockyou
+      POSTGRES_DB: rockyou
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rockyou -d rockyou"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://rockyou:rockyou@postgres:5432/rockyou
+      API_CORS_ORIGINS: http://localhost:5173,http://localhost:8080
+      RATE_LIMIT_PER_MINUTE: "30"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+  # Service d'import : NE démarre PAS automatiquement (profil dédié).
+  # Voir README pour la commande d'exécution.
+  importer:
+    build: ./importer
+    profiles: ["import"]
+    environment:
+      DATABASE_URL: postgresql://rockyou:rockyou@postgres:5432/rockyou
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data:/data:ro
+    command: ["-file", "/data/rockyou.txt", "-hash-workers", "8", "-write-workers", "4"]
+
+volumes:
+  postgres_data:

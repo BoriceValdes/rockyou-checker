@@ -1,0 +1,36 @@
+# Données sensibles / volumineuses (corpus RockYou, jamais commité)
+/data/
+rockyou.txt
+
+# Python
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.venv/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/.mypy_cache/
+backend/*.egg-info/
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Go
+importer/importer
+importer/*.exe
+
+# Environnement
+.env
+*.env.local
+
+# Override Docker Compose local (ex: contournement de la lenteur des bind
+# mounts Windows/WSL2 pour l'import) — propre à chaque machine, jamais commité.
+docker-compose.override.yml
+
+# Éditeurs / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+frontend/tsconfig.tsbuildinfo
