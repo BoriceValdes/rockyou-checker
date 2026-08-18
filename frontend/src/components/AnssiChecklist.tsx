@@ -39,7 +39,7 @@ export function AnssiChecklist({ anssi }: { anssi: AnssiAnalysis }) {
         {anssi.rules.map((rule) => (
           <li key={rule.code} className="flex items-center gap-2 text-sm">
             <span className={rule.passed ? "text-emerald-400" : "text-slate-600"}>
-              {rule.passed ? "✓" : "○"}
+              {rule.passed ? "✔️" : "○"}
             </span>
             <span className={rule.passed ? "text-slate-200" : "text-slate-500"}>
               {rule.label}

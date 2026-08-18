@@ -29,7 +29,7 @@ export function PasswordForm({ onSubmit, loading }: Props) {
             spellCheck={false}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••••••"
+            placeholder="..........."
             className="w-full rounded-lg border border-white/10 bg-ink-light px-4 py-3 font-mono text-lg text-slate-100 outline-none ring-signal/50 placeholder:text-slate-600 focus:ring-2"
           />
           <button

@@ -24,7 +24,7 @@ export function BreachResultCard({ breach }: { breach: BreachResult }) {
   return (
     <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-5">
       <div className="flex items-center gap-3">
-        <span className="text-2xl">✅</span>
+        <span className="text-2xl">✔️</span>
         <div>
           <p className="font-semibold text-emerald-400">Absent de la base RockYou</p>
           <p className="mt-1 text-sm text-slate-300">

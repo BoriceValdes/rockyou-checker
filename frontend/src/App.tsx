@@ -19,7 +19,7 @@ export default function App() {
           </h1>
           <p className="mt-3 text-slate-400">
             Vérifiez-le face au corpus de fuite RockYou et aux recommandations de
-            l'ANSSI — sans jamais que votre mot de passe ne quitte votre navigateur.
+            l'ANSSI - sans jamais que votre mot de passe ne quitte votre navigateur.
           </p>
         </header>
 
