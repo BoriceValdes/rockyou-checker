@@ -120,7 +120,7 @@ L'importeur Go (`importer/`) est conçu autour de trois idées :
    chargement brut. Les 14M lignes (avec doublons) sont d'abord chargées
    telles quelles ; la déduplication et le comptage des occurrences se font
    **ensuite, en une seule requête `GROUP BY` côté PostgreSQL** (moteur
-   optimisé pour ce type d'agrégation), avant `UPSERT` dans la table finale
+   optimisé pour ce type d'agrégation), avant `INSERT` dans la table finale
    indexée `breached_passwords`. Créer l'index après le chargement (plutôt
    que de le maintenir ligne à ligne) évite l'essentiel du surcoût.
 
@@ -128,7 +128,7 @@ L'importeur Go (`importer/`) est conçu autour de trois idées :
 main.go → importer.Run()
   ├─ db.PrepareStaging()      : CREATE UNLOGGED TABLE staging_passwords (...)
   ├─ pipeline concurrent      : lecture → hash SHA-1 → COPY par lots
-  └─ db.FinalizeImport()      : INSERT ... SELECT ... GROUP BY ... ON CONFLICT
+  └─ db.FinalizeImport()      : INSERT ... SELECT ... GROUP BY ...
                                  DROP TABLE staging_passwords; ANALYZE;
 ```
 
@@ -232,28 +232,14 @@ Le dépôt est initialisé avec les branches suivantes :
 | Branche              | Rôle                                                        |
 |-----------------------|--------------------------------------------------------------|
 | `main`                | Code stable, déployable                                     |
-| `develop`             | Intégration continue des fonctionnalités avant release      |
-| `feature/backend-api` | Développement de l'API Python (FastAPI)                     |
-| `feature/importer-go` | Développement de l'importeur Go                             |
-| `feature/frontend-ui` | Développement de la SPA React                               |
-
-Workflow recommandé : `feature/*` → Pull Request vers `develop` → revue de
-code → merge → `develop` → `main` lors d'une release stabilisée.
-
-Pour publier ce projet sur un dépôt privé GitHub :
-
-```bash
-git remote add origin git@github.com:<votre-compte>/rockyou-checker.git
-git push -u origin main
-git push -u origin develop
-git push --all origin   # pousse également les branches feature/*
-```
 
 ---
 
-## 8. Limites connues et pistes d'amélioration
+## 8. Pistes d'amélioration
 
-- Le corpus RockYou date de 2009 ; il ne couvre pas les fuites plus récentes.
+- Le cas où `breached_passwords` contient déjà des données n'est pas géré :
+  `FinalizeImport` suppose une table cible vide et n'effectue ni vérification
+  ni `UPSERT` en cas de ré-import.
 - L'estimation du nombre de mots de passe distincts par préfixe pourrait être
   affichée pour illustrer davantage le principe de k-anonymat.
 - Un cache (Redis) sur les préfixes les plus demandés réduirait encore la
