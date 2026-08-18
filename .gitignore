@@ -43,3 +43,9 @@ frontend/tsconfig.tsbuildinfo
 *.bak
 *.tmp
 *.log
+
+# Scripts internes / documentation PDF (jamais commités)
+/scripts/
+Backend-Explication.pdf
+Importer-Explication.pdf
+README.pdf
