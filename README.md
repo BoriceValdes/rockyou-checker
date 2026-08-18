@@ -232,6 +232,9 @@ Le dépôt est initialisé avec les branches suivantes :
 | Branche              | Rôle                                                        |
 |-----------------------|--------------------------------------------------------------|
 | `main`                | Code stable, déployable                                     |
+| `backend`             | Développement de l'API et de la logique serveur              |
+| `frontend`            | Développement de l'interface utilisateur                     |
+| `importer`            | Développement de l'outil d'import des données                |
 
 ---
 
