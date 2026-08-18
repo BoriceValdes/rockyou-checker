@@ -5,8 +5,7 @@
 // Note : SHA-1 est ici utilisé uniquement pour indexer un corpus de fuite
 // connu (RockYou) et permettre une recherche par préfixe — ce n'est PAS
 // une recommandation de hachage pour stocker des mots de passe applicatifs
-// (qui doivent utiliser argon2id/bcrypt avec sel). Voir README, section
-// "Choix de conception".
+// (qui doivent utiliser argon2id/bcrypt avec sel).
 package hasher
 
 import (
