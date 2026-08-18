@@ -3,13 +3,16 @@
 rockyou.txt
 
 # Python
-backend/__pycache__/
-backend/**/__pycache__/
+__pycache__/
+**/__pycache__/
+*.pyc
 backend/.venv/
 backend/.pytest_cache/
 backend/.ruff_cache/
 backend/.mypy_cache/
 backend/*.egg-info/
+backend/.coverage
+backend/htmlcov/
 
 # Node / frontend
 frontend/node_modules/
@@ -30,7 +33,13 @@ docker-compose.override.yml
 
 # Éditeurs / OS
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/
 *.swp
 frontend/tsconfig.tsbuildinfo
+
+# Fichiers de sauvegarde / temporaires
+*.bak
+*.tmp
+*.log

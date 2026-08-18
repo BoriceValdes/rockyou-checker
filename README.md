@@ -1,11 +1,7 @@
 # RockYou Checker
 
-Service de vérification de mots de passe compromis (corpus **RockYou**, 2009) et de
-conformité aux recommandations de l'**ANSSI**, inspiré de
-[Have I Been Pwned — Passwords](https://haveibeenpwned.com/Passwords).
-
-> Aucune inscription, aucun compte utilisateur, aucune donnée personnelle
-> collectée.
+Service de vérification de mots de passe compromis et de conformité aux
+recommandations de l'**ANSSI**.
 
 ---
 
@@ -30,12 +26,12 @@ C'est le point central de conception de ce projet : **le mot de passe en clair n
 quitte jamais le navigateur de l'utilisateur**, et son hash complet non plus.
 
 1. Le frontend calcule le SHA-1 du mot de passe **localement**, via l'API Web
-   Crypto native du navigateur (`crypto.subtle.digest`) — voir
+   Crypto native du navigateur (`crypto.subtle.digest`)  voir
    `frontend/src/services/crypto.ts`.
 2. Seuls les **5 premiers caractères** hexadécimaux du hash (le « préfixe ») sont
    envoyés au backend (`POST /api/v1/breach-check`).
 3. Le backend renvoie **toutes** les fins de hash (« suffixes ») connues pour ce
-   préfixe, ainsi que leur nombre d'occurrences dans RockYou — jamais un
+   préfixe, ainsi que leur nombre d'occurrences dans RockYou, jamais un
    booléen "compromis: oui/non" qui, lui, révélerait indirectement le mot de
    passe recherché.
 4. Le frontend compare **localement** le suffixe de son propre hash à la liste
@@ -63,18 +59,14 @@ clair.
 - CORS restreint à une liste blanche d'origines configurable.
 - Conteneurs exécutés avec un utilisateur non-root (backend, importer, frontend/nginx).
 - Aucun log applicatif ne contient de mot de passe, de hash complet ou d'adresse IP au-delà de ce que gère le rate limiter.
-- `.env` et données brutes (`rockyou.txt`) exclus du dépôt Git (`.gitignore`).
 
 ---
 
 ## 3. Architecture du backend (Python)
 
 Le backend expose une seule route métier (`POST /breach-check`) adossée à une
-seule requête SQL : une architecture en couches complète (domain/application/
-infrastructure/presentation, avec ports et use cases) ajouterait de
-l'indirection sans bénéfice réel pour cette taille de service — PostgreSQL ne
-sera jamais remplacé, il n'y aura jamais de second use case. La structure
-retenue reste légère, un dossier par responsabilité :
+seule requête SQL. La structure retenue reste légère, un dossier par
+responsabilité :
 
 ```
 backend/app/
@@ -99,13 +91,13 @@ Deux principes structurants malgré tout :
   serveur HTTP (`backend/tests/`). C'est la seule logique métier non triviale
   du service ; elle mérite d'être isolée et testée indépendamment. Ses
   paramètres (`anssi_rules.json`) sont aussi la seule chose partagée avec le
-  frontend (`frontend/src/anssi-rules.json`, copie identique — le mot de
+  frontend (`frontend/src/anssi-rules.json`, copie identique, le mot de
   passe ne devant jamais quitter le navigateur, cette analyse doit tourner
   des deux côtés ; un test, `backend/tests/test_anssi_rules_sync.py`,
   garantit que les deux copies restent synchronisées).
 - **Validation à la frontière, une seule fois** : `BreachCheckRequest`
   (`api/schemas.py`) valide et normalise `hash_prefix` (5 caractères
-  hexadécimaux, mis en majuscules) avant même que la route ne s'exécute —
+  hexadécimaux, mis en majuscules) avant même que la route ne s'exécute,
   `db.find_by_prefix` peut donc faire confiance à son argument sans le
   revalider, au lieu de dupliquer la même vérification à deux niveaux.
 
@@ -113,9 +105,7 @@ Deux principes structurants malgré tout :
 
 ## 4. Pourquoi l'import en Go, et comment il est rapide
 
-L'énoncé indique qu'un import naïf prend ~7 minutes et que le record est de
-40 secondes pour 14,3 millions de lignes. L'importeur Go (`importer/`) est
-conçu autour de trois idées :
+L'importeur Go (`importer/`) est conçu autour de trois idées :
 
 1. **Pipeline concurrent** (`importer/internal/importer/importer.go`) :
    lecture séquentielle du fichier → hachage SHA-1 parallélisé sur N
@@ -143,7 +133,7 @@ main.go → importer.Run()
 ```
 
 SHA-1 est utilisé ici uniquement pour **indexer un corpus de fuite connu** et
-permettre la recherche par préfixe façon HIBP — ce n'est pas une
+permettre la recherche par préfixe façon HIBP, ce n'est pas une
 recommandation de hachage pour stocker des identifiants applicatifs (qui
 doivent utiliser `argon2id`/`bcrypt` avec sel, hors périmètre de ce projet).
 
