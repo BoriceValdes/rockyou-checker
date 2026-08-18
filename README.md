@@ -182,31 +182,18 @@ docker compose --profile import run --rm importer \
 La progression (lignes lues/écrites, temps écoulé) est affichée toutes les 2
 secondes dans les logs du conteneur.
 
-### 5.3. Développement local (hors Docker)
+### 5.3. Lancer les tests
 
-```bash
-# Backend
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements-dev.txt
-cp .env.example .env   # adapter DATABASE_URL si besoin
-uvicorn app.main:app --reload
-
-# Frontend
-cd frontend
-npm install
-cp .env.example .env
-npm run dev
-```
-
-### 5.4. Lancer les tests
+Commandes à lancer depuis la **racine du dépôt** (le test de synchronisation
+des règles ANSSI compare un fichier du backend à un fichier du frontend, les
+deux dossiers doivent donc être visibles dans le conteneur) :
 
 ```bash
 # Backend (logique domaine, sans dépendance réseau/DB)
-cd backend && pytest
+docker run --rm -v "${PWD}:/app" -w /app/backend python:3.12-slim bash -c "pip install -r requirements-dev.txt && pytest"
 
 # Frontend (règles ANSSI côté client)
-cd frontend && npm run test
+docker run --rm -v "${PWD}:/app" -w /app/frontend node:20-alpine sh -c "npm install && npm run test"
 ```
 
 ---
