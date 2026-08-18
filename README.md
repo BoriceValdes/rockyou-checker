@@ -154,7 +154,7 @@ docker compose up --build -d
 
 - Frontend : http://localhost:8080
 - API : http://localhost:8000/api/v1 (documentation interactive : `/api/docs`)
-- PostgreSQL : `localhost:5432` (user/password/db : `rockyou`)
+- PostgreSQL : `localhost:5432`
 
 Tant que l'import n'a pas été effectué, la base est vide : toute recherche
 retournera "absent de la base RockYou".
