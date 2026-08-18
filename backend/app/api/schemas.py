@@ -9,7 +9,7 @@ class BreachCheckRequest(BaseModel):
 
     IMPORTANT : `hash_prefix` ne contient JAMAIS le mot de passe ni son
     hash complet — uniquement les 5 premiers caractères hexadécimaux du
-    SHA-1, calculé côté client. Voir README (modèle de confidentialité).
+    SHA-1, calculé côté client.
     """
 
     hash_prefix: str = Field(..., min_length=5, max_length=5, examples=["5BAA6"])

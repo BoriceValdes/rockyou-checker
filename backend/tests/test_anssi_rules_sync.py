@@ -1,10 +1,8 @@
 """
 Vérifie que les deux copies du fichier de règles ANSSI (backend et
 frontend) restent identiques.
-
-La même analyse doit tourner à la fois côté backend (tests, réutilisation)
-et côté navigateur (le mot de passe ne doit jamais quitter le client — voir
-README, modèle k-anonymat), donc les paramètres des règles sont dupliqués
+La même analyse doit tourner à la fois côté backend
+et côté navigateur, donc les paramètres des règles sont dupliqués
 en JSON entre les deux services. Ce test transforme une divergence
 silencieuse possible en échec de test explicite.
 """

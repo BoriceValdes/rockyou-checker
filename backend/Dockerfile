@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Utilisateur non-root (bonne pratique sécurité)
+# Utilisateur non-root
 RUN addgroup --system app && adduser --system --ingroup app app
 
 COPY requirements.txt .

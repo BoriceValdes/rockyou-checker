@@ -1,7 +1,7 @@
-# Pas de `from __future__ import annotations` ici (contrairement aux autres
-# modules du projet) : combiné à `@limiter.limit(...)` de slowapi, ça empêche
-# Pydantic de résoudre l'annotation `BreachCheckRequest` du endpoint au
-# démarrage (PydanticUndefinedAnnotation) et fait planter l'application.
+# Endpoints publics de l'API :
+# - GET /health : état du service et de la connexion à la base.
+# - POST /breach-check : vérifie si un mot de passe a fuité, via k-anonymat
+#   (préfixe de hash envoyé, comparaison du suffixe faite côté client).
 from fastapi import APIRouter, Request
 
 from app.api.schemas import (

@@ -1,16 +1,8 @@
 """
-Analyse de conformité ANSSI des mots de passe : logique pure, sans aucune
-dépendance d'infrastructure. Entièrement testable unitairement.
-
+Analyse de conformité ANSSI des mots de passe.
 Les règles elles-mêmes (seuils, motifs, jeux de caractères) sont définies
 une seule fois en données dans anssi_rules.json et interprétées ici. La
-même analyse doit aussi tourner dans le navigateur (voir README, modèle de
-confidentialité k-anonymat : le mot de passe ne doit jamais quitter le
-client) — frontend/src/services/anssi.ts charge une copie de ce fichier
-(frontend/src/anssi-rules.json) et l'interprète de la même façon. Un test
-(backend/tests/test_anssi_rules_sync.py) garantit que les deux copies
-restent identiques : c'est le point qui peut diverger, pas la logique
-d'interprétation elle-même, qui n'existe qu'une fois par langage.
+même analyse doit aussi tourner dans le navigateur.
 """
 from __future__ import annotations
 
@@ -41,8 +33,7 @@ class AnssiRuleResult:
 class AnssiAnalysis:
     """
     Résultat de l'analyse d'un mot de passe selon les recommandations de
-    l'ANSSI (guide "Recommandations relatives à l'authentification
-    multifacteur et aux mots de passe", 2021).
+    l'ANSSI.
     """
 
     score: int  # 0 à 100

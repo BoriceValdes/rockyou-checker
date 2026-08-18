@@ -1,7 +1,6 @@
 """
 Accès PostgreSQL : cycle de vie du pool de connexions et requête de
-recherche par préfixe de hash (modèle de confidentialité k-anonymat,
-voir README).
+recherche par préfixe de hash (modèle de confidentialité k-anonymat).
 """
 from __future__ import annotations
 

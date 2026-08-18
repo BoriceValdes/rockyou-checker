@@ -54,8 +54,7 @@ def create_app() -> FastAPI:
     app.state.limiter = limiter
     # Le handler de slowapi est typé pour RateLimitExceeded, plus précis que
     # la signature générique (Request, Exception) -> Response attendue par
-    # Starlette : comportement correct, juste un désaccord de typage connu
-    # entre les deux bibliothèques.
+    # Starlette
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
     app.add_middleware(SlowAPIMiddleware)
 
