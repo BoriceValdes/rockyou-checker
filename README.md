@@ -123,6 +123,19 @@ L'importeur Go (`importer/`) est conçu autour de trois idées :
    optimisé pour ce type d'agrégation), avant `INSERT` dans la table finale
    indexée `breached_passwords`. Créer l'index après le chargement (plutôt
    que de le maintenir ligne à ligne) évite l'essentiel du surcoût.
+4. **Réglage mémoire de PostgreSQL (`shared_buffers`)** : l'image
+   `postgres:16-alpine` démarre avec un `shared_buffers` par défaut de
+   128 Mo, beaucoup trop faible pour l'étape d'agrégation (`GROUP BY` +
+   reconstruction de l'index) qui traite 14,3 millions de lignes. J'ai dû
+   faire ce réglage PostgreSQL dans `docker-compose.yml` :
+
+   ```yaml
+   postgres:
+     command: postgres -c shared_buffers=1GB -c max_wal_size=4GB
+   ```
+
+   augmentant ainsi le cache mémoire interne de PostgreSQL utilisé pour
+   trier/agréger.
 
 ```
 main.go → importer.Run()

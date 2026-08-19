@@ -57,8 +57,7 @@ func Connect(ctx context.Context, dsn string, poolSize int32) (*pgxpool.Pool, er
 }
 
 // EnsureTargetEmpty vérifie que la table finale breached_passwords est vide
-// avant de lancer un import. On refuse de continuer si elle contient déjà
-// des données, plutôt que de risquer un double comptage.
+// avant de lancer un import.
 func EnsureTargetEmpty(ctx context.Context, pool *pgxpool.Pool) error {
 	var isEmpty bool
 	if err := pool.QueryRow(ctx, `SELECT NOT EXISTS (SELECT 1 FROM breached_passwords)`).Scan(&isEmpty); err != nil {
@@ -100,19 +99,7 @@ func CopyBatch(ctx context.Context, pool *pgxpool.Pool, rows []Row) (int64, erro
 }
 
 // FinalizeImport agrège la table de staging (déduplication + comptage des
-// occurrences) dans la table finale indexée `breached_passwords`. La table
-// cible est garantie vide à ce stade (voir EnsureTargetEmpty, appelée avant
-// le début de l'import) : il est donc bien plus rapide d'insérer en masse
-// SANS index puis de le reconstruire en une passe triée, plutôt que de
-// maintenir l'index ligne par ligne pendant l'insertion (~14M lignes).
-//
-// Note : une tentative de paralléliser manuellement ce GROUP BY (une
-// connexion par plage de préfixe) a été testée et
-// abandonnée : sans index sur staging_passwords.hash_prefix, chaque
-// partition doit scanner l'intégralité de la table (8 scans complets au
-// lieu d'un seul), ce qui annule le gain ; et construire cet index coûte à
-// lui seul autant que le GROUP BY qu'il est censé accélérer. Le GROUP BY
-// séquentiel reste donc la meilleure option ici.
+// occurrences) dans la table finale indexée `breached_passwords`.
 func FinalizeImport(ctx context.Context, pool *pgxpool.Pool) error {
 	start := time.Now()
 
