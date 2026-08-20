@@ -6,11 +6,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql://rockyou:rockyou@postgres:5432/rockyou"
-    api_cors_origins: str = "http://localhost:5173"
-    rate_limit_per_minute: int = 30
-    db_pool_min_size: int = 2  
-    db_pool_max_size: int = 10
+    database_url: str
+    api_cors_origins: str
+    rate_limit_per_minute: int
+    db_pool_min_size: int
+    db_pool_max_size: int
 
     @property
     def cors_origins_list(self) -> list[str]:

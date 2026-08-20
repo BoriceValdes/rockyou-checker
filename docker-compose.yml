@@ -27,6 +27,8 @@ services:
       DATABASE_URL: postgresql://rockyou:rockyou@postgres:5432/rockyou
       API_CORS_ORIGINS: http://localhost:5173,http://localhost:8080
       RATE_LIMIT_PER_MINUTE: "30"
+      DB_POOL_MIN_SIZE: "2"
+      DB_POOL_MAX_SIZE: "10"
     depends_on:
       postgres:
         condition: service_healthy
