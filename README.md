@@ -45,11 +45,7 @@ retenu par l'API publique de Have I Been Pwned.
 
 **Conséquence pratique** : les règles de conformité **ANSSI** sont, elles
 aussi, entièrement évaluées côté client (`frontend/src/services/anssi.ts`),
-sans aucun appel réseau. La même logique existe côté backend
-(`backend/app/rules/anssi.py`) à des fins de tests unitaires et de
-réutilisation potentielle (CLI, traitement par lot interne), mais elle n'est
-**volontairement pas exposée** via une route HTTP recevant un mot de passe en
-clair.
+sans aucun appel réseau.
 
 ### Autres mesures de sécurité
 
