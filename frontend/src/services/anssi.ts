@@ -28,15 +28,15 @@ interface Rule {
 type Check = (pwd: string, rule: Rule) => boolean;
 
 const CHECKS: Record<string, Check> = {
-  min_length: (pwd, rule) => pwd.length >= (rule.value ?? 0),
+  min_length: (pwd, rule) => pwd.length >= rule.value!,
   has_lower: (pwd) => /[a-z]/.test(pwd),
   has_upper: (pwd) => /[A-Z]/.test(pwd),
   has_digit: (pwd) => /[0-9]/.test(pwd),
-  has_any_char: (pwd, rule) => [...pwd].some((c) => (rule.chars ?? "").includes(c)),
+  has_any_char: (pwd, rule) => [...pwd].some((c) => (rule.chars!).includes(c)),
   no_sequence: (pwd, rule) => {
     const lowered = pwd.toLowerCase();
-    const window = rule.window ?? 4;
-    return !(rule.patterns ?? []).some((pattern) => {
+    const window = rule.window!;
+    return !rule.patterns!.some((pattern) => {
       for (let i = 0; i <= pattern.length - window; i++) {
         if (lowered.includes(pattern.slice(i, i + window))) return true;
       }
@@ -44,7 +44,7 @@ const CHECKS: Record<string, Check> = {
     });
   },
   no_repeated_char: (pwd, rule) => {
-    const maxRun = rule.max_run ?? 3;
+    const maxRun = rule.max_run!;
     let run = 1;
     for (let i = 1; i < pwd.length; i++) {
       run = pwd[i] === pwd[i - 1] ? run + 1 : 1;
