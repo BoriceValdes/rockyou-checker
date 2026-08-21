@@ -42,7 +42,7 @@ def create_app() -> FastAPI:
         title="RockYou Password Checker API",
         description=(
             "API de vérification de compromission de mots de passe "
-            "(base RockYou) et de conformité ANSSI, conçue selon un "
+            "(base RockYou), conçue selon un "
             "modèle de confidentialité par k-anonymat."
         ),
         version="1.0.0",

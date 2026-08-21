@@ -77,24 +77,19 @@ backend/app/
 ├── api/
 │   ├── routes.py       # Endpoints FastAPI
 │   └── schemas.py      # DTOs Pydantic (validation d'entrée/sortie)
-├── db/
-│   └── db.py           # Pool asyncpg + requête de recherche par préfixe
-└── rules/
-    ├── anssi.py         # Règles ANSSI : logique pure, testable sans I/O
-    └── anssi_rules.json # Paramètres des règles (seuils, motifs...)
+└── db/
+    └── db.py           # Pool asyncpg + requête de recherche par préfixe
 ```
 
 Deux principes structurants malgré tout :
 
-- **`rules/anssi.py` n'a aucune dépendance d'infrastructure** : il ne connaît
-  ni FastAPI ni asyncpg, et se teste unitairement sans base de données ni
-  serveur HTTP (`backend/tests/`). C'est la seule logique métier non triviale
-  du service ; elle mérite d'être isolée et testée indépendamment. Ses
-  paramètres (`anssi_rules.json`) sont aussi la seule chose partagée avec le
-  frontend (`frontend/src/anssi-rules.json`, copie identique, le mot de
-  passe ne devant jamais quitter le navigateur, cette analyse doit tourner
-  des deux côtés ; un test, `backend/tests/test_anssi_rules_sync.py`,
-  garantit que les deux copies restent synchronisées).
+- **La conformité ANSSI est évaluée uniquement côté frontend**
+  (`frontend/src/services/anssi.ts`), en local dans le navigateur, puisque
+  le mot de passe ne doit jamais le quitter. Une implémentation Python
+  équivalente existait ici (`rules/anssi.py`) à des fins de tests unitaires,
+  mais n'était appelée par aucune route de l'API — elle a été retirée pour
+  ne pas maintenir deux implémentations indépendantes du même algorithme
+  sans bénéfice réel.
 - **Validation à la frontière, une seule fois** : `BreachCheckRequest`
   (`api/schemas.py`) valide et normalise `hash_prefix` (5 caractères
   hexadécimaux, mis en majuscules) avant même que la route ne s'exécute,
