@@ -152,6 +152,15 @@ doivent utiliser `argon2id`/`bcrypt` avec sel, hors périmètre de ce projet).
 
 ### 5.1. Lancer l'application
 
+**Étape obligatoire avant le premier build** : le frontend lit l'URL de l'API depuis
+`frontend/.env` (ignoré par Git).
+
+```bash
+cp frontend/.env.example frontend/.env
+```
+
+Puis :
+
 ```bash
 docker compose up --build -d
 ```
