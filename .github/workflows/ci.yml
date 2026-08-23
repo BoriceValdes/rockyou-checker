@@ -27,15 +27,8 @@ jobs:
 
       - run: mypy app
 
-      - name: pytest
-        run: |
-          pytest
-          code=$?
-          if [ $code -eq 5 ]; then
-            echo "Aucun test collecté (backend/tests/ est vide actuellement) — pas un échec."
-            exit 0
-          fi
-          exit $code
+      # pytest retiré temporairement : backend/tests/ est vide pour l'instant.
+      # À réactiver dès qu'il y a de nouveau des tests côté backend.
 
   frontend:
     runs-on: ubuntu-latest
