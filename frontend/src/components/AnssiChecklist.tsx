@@ -1,12 +1,12 @@
-import type { AnssiAnalysis } from "../types/domain";
+import type { AnssiAnalysis, AnssiSeverity } from "../types/domain";
 
-const SEVERITY_LABEL: Record<AnssiAnalysis["severity"], string> = {
+const SEVERITY_LABEL: Record<AnssiSeverity, string> = {
   ok: "Conforme aux recommandations ANSSI",
   weak: "Partiellement conforme",
   critical: "Non conforme — mot de passe faible",
 };
 
-const SEVERITY_COLOR: Record<AnssiAnalysis["severity"], string> = {
+const SEVERITY_COLOR: Record<AnssiSeverity, string> = {
   ok: "text-emerald-400",
   weak: "text-amber-400",
   critical: "text-alert",

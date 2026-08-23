@@ -50,7 +50,5 @@ export function usePasswordAnalysis() {
     }
   }, []);
 
-  const reset = useCallback(() => setState({ loading: false, error: null, result: null }), []);
-
-  return { ...state, analyze, reset };
+  return { ...state, analyze};
 }

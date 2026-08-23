@@ -1,11 +1,8 @@
 /**
  * Calcule le hash SHA-1 (hexadécimal, majuscules) d'une chaîne, en
  * utilisant exclusivement l'API Web Crypto native du navigateur.
- *
- * IMPORTANT (confidentialité) : ce calcul est 100% local. Le mot de passe
- * n'est jamais sérialisé, jamais envoyé au réseau, jamais journalisé.
  * Seul le préfixe (5 premiers caractères) du hash résultant sera transmis
- * au serveur — voir `services/api.ts` et le README (modèle k-anonymat).
+ * au serveur - voir `services/api.ts`.
  */
 export async function sha1Hex(input: string): Promise<string> {
   const encoder = new TextEncoder();

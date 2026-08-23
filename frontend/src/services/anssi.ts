@@ -3,15 +3,8 @@ import rulesSpec from "../anssi-rules.json";
 
 /**
  * Analyse ANSSI d'un mot de passe.
- *
  * Les règles elles-mêmes (seuils, motifs, jeux de caractères) sont définies
- * une seule fois en données dans anssi-rules.json et interprétées ici. La
- * même analyse tourne aussi côté backend (app/anssi.py, backend/app/
- * anssi_rules.json) à des fins de tests unitaires et de réutilisation
- * potentielle, mais volontairement jamais via une route HTTP recevant un
- * mot de passe en clair : c'est ici, dans le navigateur, que ça doit
- * tourner. Un test (backend/tests/test_anssi_rules_sync.py) garantit que
- * les deux copies du fichier de règles restent identiques.
+ * une seule fois en données dans anssi-rules.json et interprétées ici.
  */
 
 interface Rule {
@@ -32,7 +25,7 @@ const CHECKS: Record<string, Check> = {
   has_lower: (pwd) => /[a-z]/.test(pwd),
   has_upper: (pwd) => /[A-Z]/.test(pwd),
   has_digit: (pwd) => /[0-9]/.test(pwd),
-  has_any_char: (pwd, rule) => [...pwd].some((c) => (rule.chars!).includes(c)),
+  has_any_char: (pwd, rule) => [...pwd].some((c) => rule.chars!.includes(c)),
   no_sequence: (pwd, rule) => {
     const lowered = pwd.toLowerCase();
     const window = rule.window!;

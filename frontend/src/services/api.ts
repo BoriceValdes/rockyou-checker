@@ -14,8 +14,6 @@ export class ApiError extends Error {}
 
 /**
  * Interroge le backend avec uniquement le PRÉFIXE (5 caractères) du hash
- * SHA-1 du mot de passe. Le serveur ne reçoit jamais le mot de passe, ni
- * le hash complet : voir README, section "Modèle de confidentialité".
  */
 export async function fetchSuffixesForPrefix(prefix: string): Promise<SuffixMatchDto[]> {
   const response = await fetch(`${API_BASE}/breach-check`, {

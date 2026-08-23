@@ -11,7 +11,7 @@ export function BreachResultCard({ breach }: { breach: BreachResult }) {
             <p className="mt-1 text-sm text-slate-300">
               Ce mot de passe apparaît{" "}
               <span className="font-mono text-slate-100">
-                {breach.occurrenceCount.toLocaleString("fr-FR")}
+                {breach.occurrenceCount}
               </span>{" "}
               fois dans le corpus RockYou. Il est fortement recommandé de ne plus l'utiliser.
             </p>
