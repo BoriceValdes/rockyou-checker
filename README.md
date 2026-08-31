@@ -81,11 +81,7 @@ Deux principes structurants malgré tout :
 
 - **La conformité ANSSI est évaluée uniquement côté frontend**
   (`frontend/src/services/anssi.ts`), en local dans le navigateur, puisque
-  le mot de passe ne doit jamais le quitter. Une implémentation Python
-  équivalente existait ici (`rules/anssi.py`) à des fins de tests unitaires,
-  mais n'était appelée par aucune route de l'API — elle a été retirée pour
-  ne pas maintenir deux implémentations indépendantes du même algorithme
-  sans bénéfice réel.
+  le mot de passe ne doit jamais le quitter.
 - **Validation à la frontière, une seule fois** : `BreachCheckRequest`
   (`api/schemas.py`) valide et normalise `hash_prefix` (5 caractères
   hexadécimaux, mis en majuscules) avant même que la route ne s'exécute,
